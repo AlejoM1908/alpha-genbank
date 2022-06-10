@@ -3,7 +3,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from user.models import User
-from user.serializers import UserRegistrationSerializer, UserLoginSerializer
+from user.serializers import UserRegistrationSerializer, UserLoginSerializer, UserSerializer
 from rest_framework import status, permissions
 
 
@@ -11,7 +11,7 @@ class AuthUserAPIView(GenericAPIView):
     """Used to generate some token protected endpoints for users info"""
 
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = UserRegistrationSerializer
+    serializer_class = UserSerializer
 
     def get_list(self):
         """Used to get all the stored users basic info"""
@@ -37,6 +37,8 @@ class AuthUserAPIView(GenericAPIView):
 
         if serializer.is_valid():
             serializer.save()
+            user.set_password(serializer.data.get('password'))
+            user.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
