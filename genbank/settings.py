@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Project apps
     "user.apps.UserConfig",
+    "production.apps.ProductionConfig",
     # Libraries imports
     'rest_framework',
     'drf_yasg'
