@@ -16,7 +16,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             "password",
             "first_name",
             "last_name",
-            "role",
         )
 
     def create(self, validated_data):
@@ -30,15 +29,18 @@ class UserSerializer(serializers.ModelSerializer):
             "id",
             "username",
             "email",
-            "password",
             "first_name",
             "last_name",
-            "role",
         )
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
 
+class ChangePasswordSerializer(serializers.Serializer):
+    """Usedto change the user password"""
+
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
 
 class UserLoginSerializer(serializers.ModelSerializer):
     """Used to serialize the data provided in a HTTP request as an User model for login"""
@@ -47,7 +49,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("id", "username", "email", "password", "role", "token")
+        fields = ("id", "username", "email", "password", "token")
         read_only_fields = ["token"]
 
     def create(self, validated_data):

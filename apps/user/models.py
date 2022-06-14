@@ -54,12 +54,9 @@ class CustomUserManager(UserManager):
 class User(AbstractUser, PermissionsMixin, TrackingModel):
     """Model to manage the users info in the database and requests"""
 
-    TEACHER = 1
-    STUDENT = 2
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email"]
-    ROLE_CHOICES = ((TEACHER, "Teacher"), (STUDENT, "Student"))
 
     username_validator = UnicodeUsernameValidator()
 
@@ -105,7 +102,6 @@ class User(AbstractUser, PermissionsMixin, TrackingModel):
         default=True,
         help_text=_("Designates whether this user has a verified email. "),
     )
-    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
 
     objects = CustomUserManager()
 
