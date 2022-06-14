@@ -3,7 +3,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from user.models import User
-from user.serializers import UserRegistrationSerializer, UserLoginSerializer, UserSerializer
+from user.serializers import ChangePasswordSerializer, UserRegistrationSerializer, UserLoginSerializer, UserSerializer
 from rest_framework import status, permissions
 
 
@@ -37,8 +37,6 @@ class AuthUserAPIView(GenericAPIView):
 
         if serializer.is_valid():
             serializer.save()
-            user.set_password(serializer.data.get('password'))
-            user.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -50,6 +48,23 @@ class AuthUserAPIView(GenericAPIView):
         user.delete()
         return Response(status=status.HTTP_202_ACCEPTED)
 
+class UserPasswordUpdateAPIView(GenericAPIView):
+    """"""""
+    permission_classes= (permissions.IsAuthenticated,)
+    serializer_class= ChangePasswordSerializer
+    
+    def put(self, request):
+        """Used to update the user password"""
+        user_id = request.query_params.get("id", None)
+        user = User.objects.get(id=user_id)
+        serializer = self.serializer_class(data=request.data)
+
+        if  serializer.is_valid() and user.check_password(serializer.data.get('old_password')):
+            user.set_password(serializer.data.get('new_password'))
+            user.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserRegistrationAPIView(GenericAPIView):
     """Used to generate public endpoints for new users registration"""
@@ -66,7 +81,6 @@ class UserRegistrationAPIView(GenericAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class UserLoginAPIView(GenericAPIView):
     """Used to generate a public endpoint for user login and JWT token generation"""
