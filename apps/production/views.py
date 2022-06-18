@@ -43,7 +43,7 @@ class SeedAPIView(GenericAPIView):
         seed_id = request.query_params.get("id", None)
         seed = SeedModel.objects.get(id=seed_id)
         seed.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_202_ACCEPTED)
 
 
 class TerrainAPIView(GenericAPIView):
@@ -85,7 +85,7 @@ class TerrainAPIView(GenericAPIView):
         terrain_id = request.query_params.get("id", None)
         terrain = TerrainModel.objects.get(id=terrain_id)
         terrain.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_202_ACCEPTED)
     
 class LotAPIView(GenericAPIView):
     serializer_class = LotSerializer
@@ -126,7 +126,7 @@ class LotAPIView(GenericAPIView):
         lot_id = request.query_params.get("id", None)
         lot = LotModel.objects.get(id=lot_id)
         lot.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_202_ACCEPTED)
     
 class CropAPIView(GenericAPIView):
     serializer_class = CropSerializer
@@ -167,7 +167,7 @@ class CropAPIView(GenericAPIView):
         crop_id = request.query_params.get("id", None)
         crop = CropModel.objects.get(id=crop_id)
         crop.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_202_ACCEPTED)
 
 class HarvestAPIView(GenericAPIView):
     serializer_class = HarvestSerializer
@@ -208,4 +208,4 @@ class HarvestAPIView(GenericAPIView):
         harvest_id = request.query_params.get("id", None)
         harvest = HarvestModel.objects.get(id=harvest_id)
         harvest.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_202_ACCEPTED)
