@@ -12,11 +12,6 @@ class SeedSerializer(serializers.ModelSerializer):
             "genetic_purity",
         )
 
-    def create(self, validated_data):
-        return SeedModel.objects.create_seed(**validated_data)
-
-
-
 class TerrainSerializer(serializers.ModelSerializer):
     class Meta:
         model = TerrainModel
@@ -27,10 +22,6 @@ class TerrainSerializer(serializers.ModelSerializer):
             "tag",
         )
 
-    def create(self, validated_data):
-        return TerrainModel.objects.create_terrain(**validated_data)
-    
-
 class LotSerializer(serializers.ModelSerializer):
     class Meta:
         model = LotModel
@@ -39,9 +30,6 @@ class LotSerializer(serializers.ModelSerializer):
             "tr_id",
             "target_purity",
         )
-
-    def create(self, validated_data):
-        return LotModel.objects.create_lot(**validated_data)
 
 class CropSerializer(serializers.ModelSerializer):
     class Meta:
@@ -54,9 +42,6 @@ class CropSerializer(serializers.ModelSerializer):
             "projected_date"
         )
 
-    def create(self, validated_data):
-        return CropModel.objects.create_crop(**validated_data)
-
 class HarvestSerializer(serializers.ModelSerializer):
     class Meta:
         model = HarvestModel
@@ -66,6 +51,3 @@ class HarvestSerializer(serializers.ModelSerializer):
             "flower",
             "waste",
         )
-
-    def create(self, validated_data):
-        return HarvestModel.objects.create_harvest(**validated_data)

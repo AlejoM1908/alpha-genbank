@@ -1,3 +1,4 @@
+from typing_extensions import Required
 from rest_framework import serializers
 from user.models import User
 
@@ -5,7 +6,8 @@ from user.models import User
 class UserRegistrationSerializer(serializers.ModelSerializer):
     """Used to serialize the data provided in a HTTP request as an User model"""
 
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True, required= True)
+    username =  serializers.CharField(required= True)
 
     class Meta:
         model = User
@@ -33,9 +35,6 @@ class UserSerializer(serializers.ModelSerializer):
             "last_name",
         )
 
-    def create(self, validated_data):
-        return User.objects.create_user(**validated_data)
-
 class ChangePasswordSerializer(serializers.Serializer):
     """Usedto change the user password"""
 
@@ -51,6 +50,3 @@ class UserLoginSerializer(serializers.ModelSerializer):
         model = User
         fields = ("id", "username", "email", "password", "token")
         read_only_fields = ["token"]
-
-    def create(self, validated_data):
-        return User.objects.create_user(**validated_data)
